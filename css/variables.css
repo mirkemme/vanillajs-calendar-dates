@@ -1,0 +1,16 @@
+:root {
+  --color-background: #ebebf1;
+  --color-bg-today-container: #eeeeee;
+  --color-bg-upcoming-container: #dedede;
+  --color-bg-past-container: #cdcdcd;
+
+  --color-bg-today-card: #363b6e;
+  --color-bg-upcoming-card: #5e628b;
+  --color-bg-past-card: #8689a8;
+
+  --color-bg-title-card: #d7d8e2;
+
+  --color-text-title: #363b6e;
+  --color-text-light: #f8f8f8;
+  --color-text-dark: #262626;
+}

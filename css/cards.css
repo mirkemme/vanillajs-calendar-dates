@@ -1,0 +1,107 @@
+.todayCardsContainer,
+.upcomingCardsContainer,
+.pastCardsContainer {
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appointments_title {
+  font-size: 16px;
+  font-weight: 200;
+  text-transform: uppercase;
+  color: var(--color-text-title);
+}
+
+.card__wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: 8px;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.card__info {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.card__priority {
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--color-text-light);
+}
+
+.card__priority__value {
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-background);
+  border-radius: 50%;
+}
+
+.card__date {
+  width: auto;
+  height: 100%;
+  font-size: 12px;
+  font-weight: 100;
+  color: var(--color-text-light);
+}
+
+.appointments_today {
+  background-color: var(--color-bg-today-container);
+}
+
+.appointments_upcoming {
+  background-color: var(--color-bg-upcoming-container);
+}
+
+.appointments_past {
+  background-color: var(--color-bg-past-container);
+}
+
+.appointments_today .card__wrapper {
+  background: linear-gradient(0deg, #72769a 0%, var(--color-bg-today-card) 100%);
+}
+
+.appointments_upcoming .card__wrapper {
+  background: linear-gradient(0deg, #9b9db7 0%, var(--color-bg-upcoming-card) 100%);
+}
+
+.appointments_past .card__wrapper {
+  background: linear-gradient(0deg, #c3c4d4 0%, var(--color-bg-past-card) 100%);
+}
+
+.card__title {
+  width: 100%;
+  height: auto;
+  padding: 10px 5px 5px 10px;
+  background-color: var(--color-bg-title-card);
+  font-size: 15px;
+  font-weight: 300;
+  border-radius: 3px;
+  box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
