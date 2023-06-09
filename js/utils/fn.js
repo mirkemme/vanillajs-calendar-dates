@@ -62,11 +62,11 @@ const showSortingPriorityIcon = (sorting) => {
     const iconEl = createEl("img", "");
 
     if (sorting === "descending") {
-        iconEl.setAttribute("src", "../assets/icons/arrow-down.svg");
+        iconEl.setAttribute("src", "./assets/icons/arrow-down.svg");
         iconEl.setAttribute("alt", "descending");
     } else if (sorting === "ascending") {
         iconSortingPriorityEl.textContent = "";
-        iconEl.setAttribute("src", "../assets/icons/arrow-up.svg");
+        iconEl.setAttribute("src", "./assets/icons/arrow-up.svg");
         iconEl.setAttribute("alt", "ascending");
     } else {
         iconSortingPriorityEl.textContent = "";
