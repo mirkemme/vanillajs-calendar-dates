@@ -46,6 +46,12 @@ export const renderElements = (todoItems, listEl) => {
 }
 
 const renderTodoList = () => {
+    if (todoTodayList.length !== 0)
+        todayCardsContainerEl.textContent = "";
+    if (todoUpcomingList.length !== 0)
+        upcomingCardsContainerEl.textContent = "";
+    if (todoPastList.length !== 0)
+        pastCardsContainerEl.textContent = "";
     todoList.forEach((todo) => {
         if (todo.date === currentDate) {
             todayCardsContainerEl.append(cardGen(todo));
@@ -58,78 +64,70 @@ const renderTodoList = () => {
     })
 }
 
-const showSortingPriorityIcon = (sorting) => {
+const showSortingIcon = (sortingType, type) => {
     const iconEl = createEl("img", "");
 
-    if (sorting === "descending") {
+    if (sortingType === "descending") {
         iconEl.setAttribute("src", "./assets/icons/arrow-down.svg");
         iconEl.setAttribute("alt", "descending");
-    } else if (sorting === "ascending") {
-        iconSortingPriorityEl.textContent = "";
+    } else if (sortingType === "ascending") {
+        eval(`iconSorting${type}El`).textContent = "";
         iconEl.setAttribute("src", "./assets/icons/arrow-up.svg");
         iconEl.setAttribute("alt", "ascending");
     } else {
-        iconSortingPriorityEl.textContent = "";
+        eval(`iconSorting${type}El`).textContent = "";
         return 0;
     }
-    iconSortingPriorityEl.append(iconEl);
+    eval(`iconSorting${type}El`).append(iconEl);
 }
 
-const showSortingDateIcon = (sorting) => {
-    const iconEl = createEl("img", "");
-
-    if (sorting === "descending") {
-        iconEl.setAttribute("src", "../assets/icons/arrow-down.svg");
-        iconEl.setAttribute("alt", "descending");
-    } else if (sorting === "ascending") {
-        iconSortingDateEl.textContent = "";
-        iconEl.setAttribute("src", "../assets/icons/arrow-up.svg");
-        iconEl.setAttribute("alt", "ascending");
-    } else {
-        iconSortingDateEl.textContent = "";
-        return 0;
-    }
-    iconSortingDateEl.append(iconEl);
-}
-
-export const sortingByPriority = (sorting) => {
-    todayCardsContainerEl.textContent = "";
-    upcomingCardsContainerEl.textContent = "";
-    pastCardsContainerEl.textContent = "";
-
-    if (sorting === "none") renderTodoList();
-    else {
-        if (sorting === "descending") {
-            todoTodayList.sort((item1, item2) => item2.priority - item1.priority);
-            todoUpcomingList.sort((item1, item2) => item2.priority - item1.priority);
-            todoPastList.sort((item1, item2) => item2.priority - item1.priority);
-        } else if (sorting === "ascending") {
-            todoTodayList.sort((item1, item2) => item1.priority - item2.priority);
-            todoUpcomingList.sort((item1, item2) => item1.priority - item2.priority);
-            todoPastList.sort((item1, item2) => item1.priority - item2.priority);
-        }
-        renderElements(todoTodayList, todayCardsContainerEl);
-        renderElements(todoUpcomingList, upcomingCardsContainerEl);
-        renderElements(todoPastList, pastCardsContainerEl);
-    }
-}
-
-const sortingByDate = (sorting) => {
-    upcomingCardsContainerEl.textContent = "";
-    pastCardsContainerEl.textContent = "";
-
+const sortingFn = (sorting, sortingType) => {
     if (sorting === "none") {
-        todayCardsContainerEl.textContent = "";
         renderTodoList();
-    }
-    else {
+    } else {
         if (sorting === "descending") {
-            todoUpcomingList.sort((item1, item2) => Date.parse(item2.date) - Date.parse(item1.date));
-            todoPastList.sort((item1, item2) => Date.parse(item2.date) - Date.parse(item1.date));
+            if (sortingType === "priority")
+                if (todoTodayList.length !== 0) {
+                    todayCardsContainerEl.textContent = "";
+                    todoTodayList.sort((item1, item2) => item2.priority - item1.priority);
+                }
+            if (todoUpcomingList.length !== 0) {
+                upcomingCardsContainerEl.textContent = "";
+                if (sortingType === "priority")
+                    todoUpcomingList.sort((item1, item2) => item2.priority - item1.priority);
+                else
+                    todoUpcomingList.sort((item1, item2) => Date.parse(item2.date) - Date.parse(item1.date));
+            }
+            if (todoPastList.length !== 0) {
+                pastCardsContainerEl.textContent = "";
+                if (sortingType === "priority")
+                    todoPastList.sort((item1, item2) => item2.priority - item1.priority);
+                else
+                    todoPastList.sort((item1, item2) => Date.parse(item2.date) - Date.parse(item1.date));
+            }
         } else if (sorting === "ascending") {
-            todoUpcomingList.sort((item1, item2) => Date.parse(item1.date) - Date.parse(item2.date));
-            todoPastList.sort((item1, item2) => Date.parse(item1.date) - Date.parse(item2.date));
+            if (sortingType === "priority")
+                if (todoTodayList.length !== 0) {
+                    todayCardsContainerEl.textContent = "";
+                    todoTodayList.sort((item1, item2) => item1.priority - item2.priority);
+                }
+            if (todoUpcomingList.length !== 0) {
+                upcomingCardsContainerEl.textContent = "";
+                if (sortingType === "priority")
+                    todoUpcomingList.sort((item1, item2) => item1.priority - item2.priority);
+                else
+                    todoUpcomingList.sort((item1, item2) => Date.parse(item1.date) - Date.parse(item2.date));
+            }
+            if (todoPastList.length !== 0) {
+                pastCardsContainerEl.textContent = "";
+                if (sortingType === "priority")
+                    todoPastList.sort((item1, item2) => item1.priority - item2.priority);
+                else
+                    todoPastList.sort((item1, item2) => Date.parse(item1.date) - Date.parse(item2.date));
+            }
         }
+        if (sortingType === "priority")
+            renderElements(todoTodayList, todayCardsContainerEl);
         renderElements(todoUpcomingList, upcomingCardsContainerEl);
         renderElements(todoPastList, pastCardsContainerEl);
     }
@@ -154,17 +152,17 @@ export const onHandleClick = (value1, value2, value3, value4) => {
     eval(`++sorting${value2}ClickCounter`);
     if (eval(`sorting${value2}ClickCounter`) === 1) {   /* al primo click */
         eval(`${value1}BtnEl`).classList.add("active"); /* aggiungo al bottone cliccato uno sfondo più scuro */
-        eval(`showSorting${value2}Icon`)("descending"); /* chiamo la funzione per mostrare l'icona freccina verso il basso */
-        eval(`sortingBy${value2}`)("descending"); /* chiamo la funzione per ordinare in modo decrescente */
+        showSortingIcon("descending", value2); /* chiamo la funzione per mostrare l'icona freccina verso il basso */
+        sortingFn("descending", value1); /* chiamo la funzione per ordinare in modo decrescente */
     }
     else if (eval(`sorting${value2}ClickCounter`) === 2) { /* al secondo click */
-        eval(`showSorting${value2}Icon`)("ascending"); /* chiamo la funzione per mostrare l'icona freccina verso l'alto */
-        eval(`sortingBy${value2}`)("ascending"); /* chiamo la funzione per ordinare in modo crescente */
+        showSortingIcon("ascending", value2); /* chiamo la funzione per mostrare l'icona freccina verso l'alto */
+        sortingFn("ascending", value1); /* chiamo la funzione per ordinare in modo crescente */
     }
     else { /* al terzo click */
-        eval(`showSorting${value2}Icon`)("none"); /* tolgo l'icona freccina */
-        eval(`sortingBy${value2}`)("none"); /* chiamo la funzione per renderizzare la todoList arrivata dalla fetch */
-        eval(`sorting${value2}ClickCounter = 0`); /* azzero il ocntatore dei click sul bottone */
+        showSortingIcon("none", value2); /* tolgo l'icona freccina */
+        sortingFn("none", value1); /* chiamo la funzione per renderizzare la todoList arrivata dalla fetch */
+        eval(`sorting${value2}ClickCounter = 0`); /* azzero il contatore dei click sul bottone */
         eval(`${value1}BtnEl`).classList.remove("active"); /* rimuovo lo sfondo scuro dal bottone */
     }
 }
