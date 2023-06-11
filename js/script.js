@@ -1,7 +1,8 @@
 import { GET } from "./utils/http.js";
 import {
-    cardGen, qS, getRandomDate, randomNumber, onHandleClick, listNotFoundModalGen,
-    noAppointmentsMessage
+    cardGen, qS, getRandomDate, randomNumber, onHandlerClick, listNotFoundModalGen,
+    noAppointmentsMessage,
+    qSA
 } from "./utils/fn.js";
 
 export const bodyEl = qS("body");
@@ -12,12 +13,13 @@ export const appointmentsPastContainerEl = qS(".appointments_past");
 export const todayCardsContainerEl = qS(".todayCardsContainer");
 export const upcomingCardsContainerEl = qS(".upcomingCardsContainer");
 export const pastCardsContainerEl = qS(".pastCardsContainer");
-export const priorityBtnEl = qS(".filter__priority__wrapper");
-export const dateBtnEl = qS(".filter__date__wrapper");
+export const priorityBtnEl = qS(".filter__priority__text");
+export const dateBtnEl = qS(".filter__date__text");
+export const filterBtnEl = qSA(".filter__text");
 export const iconSortingPriorityEl = qS(".priority__icon");
 export const iconSortingDateEl = qS(".date__icon");
-const startDate = new Date('2023-05-01'); /* costanti per determinare l'intervallo di date da utilizzare per generare le date casuali */
-const endDate = new Date('2023-07-30');
+const startDate = new Date('2023-06-01'); /* costanti per determinare l'intervallo di date da utilizzare per generare le date casuali */
+const endDate = new Date('2023-07-31');
 const minPriority = 1;
 const maxPriority = 4;
 export let todoList = [];
@@ -69,6 +71,4 @@ remoteData
     .catch((error) => listNotFoundModalGen(error));
 
 /* LISTENERS */
-priorityBtnEl.addEventListener("click", () => onHandleClick("priority", "Priority", "date", "Date"));
-
-dateBtnEl.addEventListener("click", () => onHandleClick("date", "Date", "priority", "Priority"));
+filterBtnEl.forEach((item) => item.addEventListener("click", onHandlerClick));

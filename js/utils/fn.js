@@ -1,6 +1,6 @@
 import {
     bodyEl, todoList, todoTodayList, todoUpcomingList, todoPastList, currentDate, todayCardsContainerEl, upcomingCardsContainerEl, pastCardsContainerEl,
-    priorityBtnEl, dateBtnEl, iconSortingPriorityEl, iconSortingDateEl
+    filterBtnEl, iconSortingPriorityEl, iconSortingDateEl, priorityBtnEl, dateBtnEl
 } from "../script.js";
 
 export const qS = (type) => document.querySelector(type);
@@ -133,37 +133,39 @@ const sortingFn = (sorting, sortingType) => {
     }
 }
 
-/* Gestisce gli event listener associati ai pulsanti PRIORITY e DATE e chiama le funzioni per ordinare in base alla priorità o alla data
-e le funzioni per visualizzare l'icona freccina accanto ai due pulsanti.
-Volevo ottimizzare il codice riducendo il numero di funzioni ma non sono convinto che l'approccio che ho scelto per far gestire a una sola funzione entrambi gli eventi
-sia il modo migliore, mi spiego meglio: 
-gli argomenti (value1, value2, value3, value4) possono assumere i valori ("priority", "Priority", "date", "Date") oppure
-("date", "Date", "priority", "Priority"), passati come parametri dagli event listener associati ai pulsanti "Priority" o "Date".
-Usando eval(...) ho potuto utilizzare appunto solo una funzione per gestire entrambi i listener e accedere a variabili diverse a seconda appunto dei due casi.
-Lo stesso approccio avrei potuto utilizzarlo con le funzioni che eseguono l'ordinamento e visualizzano l'icona freccina riducendo il numero da 4 a 2
-ma mi sono reso conto che utilizzando eval() la leggibilità del codice cala notevolmente.*/
-export const onHandleClick = (value1, value2, value3, value4) => {
-    if (eval(`sorting${value4}ClickCounter`) != 0) { /* Verifico che l'altro pulsante sia inattivo. Se non lo è, azzero il suo contatore dei click e
+/* Chiama le funzioni per ordinare in base alla priorità o alla data e la funzione per visualizzare l'icona freccina accanto ai due pulsanti.
+value1 assume valore "Priority" e value2 "Date" se "onHandlerClick" cattura l'evento "click sul bottone Priority",
+altrimenti i valori sono invertiti */
+const handlerTarget = (value1, value2) => {
+    if (eval(`sorting${value2}ClickCounter`) != 0) { /* Verifico che l'altro pulsante sia inattivo. Se non lo è, azzero il suo contatore dei click e
     tolgo la sua icona freccina e il suo sfondo più scuro poichè solo uno dei due pulsanti deve essere attivo nello stesso momento. */
-        eval(`sorting${value4}ClickCounter = 0`);
-        eval(`${value3}BtnEl`).classList.remove("active");
-        eval(`iconSorting${value4}El`).textContent = "";
+        eval(`sorting${value2}ClickCounter = 0`);
+        eval(`${value2}`.toLowerCase() + "BtnEl").classList.remove("active");
+        eval(`iconSorting${value2}El`).textContent = "";
     }
-    eval(`++sorting${value2}ClickCounter`);
-    if (eval(`sorting${value2}ClickCounter`) === 1) {   /* al primo click */
-        eval(`${value1}BtnEl`).classList.add("active"); /* aggiungo al bottone cliccato uno sfondo più scuro */
-        showSortingIcon("descending", value2); /* chiamo la funzione per mostrare l'icona freccina verso il basso */
-        sortingFn("descending", value1); /* chiamo la funzione per ordinare in modo decrescente */
+    eval(`++sorting${value1}ClickCounter`);
+    if (eval(`sorting${value1}ClickCounter`) === 1) {   /* al primo click */
+        eval(`${value1}`.toLowerCase() + "BtnEl").classList.add("active"); /* aggiungo al bottone cliccato uno sfondo più scuro */
+        showSortingIcon("descending", value1); /* chiamo la funzione per mostrare l'icona freccina verso il basso */
+        sortingFn("descending", value1.toLowerCase()); /* chiamo la funzione per ordinare in modo decrescente */
     }
-    else if (eval(`sorting${value2}ClickCounter`) === 2) { /* al secondo click */
-        showSortingIcon("ascending", value2); /* chiamo la funzione per mostrare l'icona freccina verso l'alto */
-        sortingFn("ascending", value1); /* chiamo la funzione per ordinare in modo crescente */
+    else if (eval(`sorting${value1}ClickCounter`) === 2) { /* al secondo click */
+        showSortingIcon("ascending", value1); /* chiamo la funzione per mostrare l'icona freccina verso l'alto */
+        sortingFn("ascending", value1.toLowerCase()); /* chiamo la funzione per ordinare in modo crescente */
     }
     else { /* al terzo click */
-        showSortingIcon("none", value2); /* tolgo l'icona freccina */
-        sortingFn("none", value1); /* chiamo la funzione per renderizzare la todoList arrivata dalla fetch */
-        eval(`sorting${value2}ClickCounter = 0`); /* azzero il contatore dei click sul bottone */
-        eval(`${value1}BtnEl`).classList.remove("active"); /* rimuovo lo sfondo scuro dal bottone */
+        showSortingIcon("none", value1); /* tolgo l'icona freccina */
+        sortingFn("none", value1.toLowerCase()); /* chiamo la funzione per renderizzare la todoList arrivata dalla fetch */
+        eval(`sorting${value1}ClickCounter = 0`); /* azzero il contatore dei click sul bottone */
+        eval(`${value1}`.toLowerCase() + "BtnEl").classList.remove("active"); /* rimuovo lo sfondo scuro dal bottone */
+    }
+}
+
+export const onHandlerClick = () => {
+    if (event.target.textContent === "Priority") /* Se il click è avvenuto sul pulsate "Priority" */
+        handlerTarget(event.target.textContent, "Date");
+    else { /* Se il click è avvenuto sul pulsate "Date" */
+        handlerTarget(event.target.textContent, "Priority");
     }
 }
 
