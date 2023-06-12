@@ -162,9 +162,9 @@ const handlerTarget = (value1, value2) => {
 }
 
 export const onHandlerClick = () => {
-    if (event.target.textContent === "Priority") /* Se il click è avvenuto sul pulsate "Priority" */
+    if (event.target.textContent === "Priority") /* Se il click è avvenuto sul pulsante "Priority" */
         handlerTarget(event.target.textContent, "Date");
-    else { /* Se il click è avvenuto sul pulsate "Date" */
+    else { /* Se il click è avvenuto sul pulsante "Date" */
         handlerTarget(event.target.textContent, "Priority");
     }
 }
